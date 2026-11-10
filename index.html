@@ -362,6 +362,26 @@
         overflow-wrap: anywhere;
       }
       .badge.wide .shelf { font-size: 16.5px; }
+      .swap-note {
+        margin-top: 7px;
+        display: inline-flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 4px 6px;
+        font-size: 13.5px;
+        font-weight: 600;
+        line-height: 1.35;
+        color: var(--ink);
+        background: var(--surface-2);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 6px 9px;
+      }
+      .swap-note .mono {
+        font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+        font-weight: 800;
+        font-size: 13px;
+      }
 
       /* ---------- Empty state ---------- */
       .empty {
@@ -594,6 +614,7 @@
         { item: "", part: "59180000", mfr: "Hartmann", shelf: "R14 (pick bin)", general: false },
         { item: "", part: "416814", mfr: "Hartmann", shelf: "R14", general: false },
         { item: "", part: "416103", mfr: "Hartmann", shelf: "R14", general: false },
+        { item: "", part: "416104", mfr: "Hartmann", shelf: "R14", general: false, swap: { main: "416104", sub: "PRM4408" } },
 
         // Mölnlycke
         { item: "Mepilex Border Flex, 4\"×4\"", part: "595300", mfr: "Mölnlycke", shelf: "T3", general: false },
@@ -611,7 +632,7 @@
         { item: "CURAD Sterile Non-Adherent Pad, 3\"×4\"", part: "NON25710", mfr: "Medline", shelf: "R17", general: false },
         { item: "", part: "NON25720", mfr: "Medline", shelf: "R17", general: false },
         { item: "No-Sting Skin Barrier Film Wipes", part: "SNS80725", mfr: "Safe n' Simple", shelf: "K14", general: false },
-        { item: "", part: "PRM4408", mfr: "Medline", shelf: "R14", general: false },
+        { item: "", part: "PRM4408", mfr: "Medline", shelf: "R14", general: false, swap: { main: "416104", sub: "PRM4408" } },
 
         // Coloplast
         { item: "Triad Hydrophilic Wound Dressing, 2.5 oz tube", part: "1964", mfr: "Coloplast", shelf: "Shipper5", general: false },
@@ -707,7 +728,9 @@
       }
 
       ITEMS.forEach(function (e) {
-        var raw = [e.item, e.part, e.mfr, e.shelf].concat(expandShelf(e.shelf)).join(" ").toLowerCase();
+        var extra = [];
+        if (e.swap) extra = [e.swap.main, e.swap.sub, "interchangeable"];
+        var raw = [e.item, e.part, e.mfr, e.shelf].concat(expandShelf(e.shelf)).concat(extra).join(" ").toLowerCase();
         e._raw = raw;
         e._squashed = squash(raw);
       });
@@ -774,8 +797,7 @@
         });
       }
 
-      function matches(e) {
-        if (activeMfr !== "All" && e.mfr !== activeMfr) return false;
+      function matchesQueryOnly(e) {
         if (!query) return true;
         var terms = query.toLowerCase().split(/\s+/).filter(Boolean);
         for (var i = 0; i < terms.length; i++) {
@@ -783,6 +805,11 @@
           if (e._raw.indexOf(t) === -1 && e._squashed.indexOf(squash(t)) === -1) return false;
         }
         return true;
+      }
+
+      function matches(e) {
+        if (activeMfr !== "All" && e.mfr !== activeMfr) return false;
+        return matchesQueryOnly(e);
       }
 
       function displayName(e) {
@@ -794,6 +821,22 @@
         renderChips();
         chipsToggleVal.textContent = activeMfr === "All" ? "All brands" : activeMfr;
         var results = ITEMS.filter(matches);
+        // Interchangeable pairs: searching for either part number in a
+        // pair surfaces BOTH members (even across a brand filter), so a
+        // picker looking up one part immediately sees the other + its shelf.
+        // Only a query naming one of the pair's part numbers triggers this —
+        // brand or shelf searches behave exactly as before.
+        if (query) {
+          var qSquashed = squash(query);
+          var expanded = results.slice();
+          ITEMS.forEach(function (e) {
+            if (!e.swap || expanded.indexOf(e) !== -1) return;
+            var namesPair = qSquashed.indexOf(squash(e.swap.main)) !== -1 || qSquashed.indexOf(squash(e.swap.sub)) !== -1;
+            if (namesPair) expanded.push(e);
+          });
+          expanded.sort(function (a, b) { return ITEMS.indexOf(a) - ITEMS.indexOf(b); });
+          results = expanded;
+        }
 
         listEl.innerHTML = "";
         results.forEach(function (e) {
@@ -833,7 +876,28 @@
             t.textContent = "General range";
             sub.appendChild(t);
           }
+          if (e.swap) {
+            var rt = document.createElement("span");
+            rt.className = "tag";
+            rt.textContent = e.part === e.swap.main ? "Main item" : "Substitute";
+            sub.appendChild(rt);
+          }
           main.appendChild(sub);
+          if (e.swap) {
+            var note = document.createElement("div");
+            note.className = "swap-note";
+            note.appendChild(document.createTextNode("⇄ Interchangeable: main item "));
+            var m1 = document.createElement("span");
+            m1.className = "mono";
+            m1.textContent = e.swap.main;
+            note.appendChild(m1);
+            note.appendChild(document.createTextNode(" / substitute "));
+            var m2 = document.createElement("span");
+            m2.className = "mono";
+            m2.textContent = e.swap.sub;
+            note.appendChild(m2);
+            main.appendChild(note);
+          }
           li.appendChild(main);
 
           var badge = document.createElement("div");
