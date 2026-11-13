@@ -536,6 +536,17 @@
         { item: "3M Tegaderm High Performance Foam Adhesive Dressing, Mini Oval, 2-3/4\" x 3\"", part: "90614", mfr: "3M", shelf: "W5", general: false },
         { item: "3M Micropore Surgical Tape, 2\" x 10 yd, paper", part: "1530-2", mfr: "3M", shelf: "W5", general: false },
         { item: "3M Durapore Surgical Tape, 1\" x 10 yd, silk-like cloth", part: "1538-1", mfr: "3M", shelf: "W5", general: false },
+        { item: "Kerramax Care Super-Absorbent Dressing, 8\" x 12\"", part: "PRD500-380-B10", mfr: "3M", shelf: "V12, V14", general: false },
+        { item: "Fibracol Plus Collagen Wound Dressing with Alginate, 2\" x 2\"", part: "2981", mfr: "3M", shelf: "V13", general: false },
+        { item: "Fibracol Plus Collagen Wound Dressing with Alginate, 4\" x 4-3/8\"", part: "2982", mfr: "3M", shelf: "V13", general: false },
+        { item: "Fibracol Plus Collagen Wound Dressing with Alginate, 3/8\" x 3/8\" x 15-3/4\"", part: "2984", mfr: "3M", shelf: "V13", general: false },
+        { item: "Kerramax Care Gentle Border Super-Absorbent Dressing, 4\" x 4\"", part: "PRD-500-1174", mfr: "3M", shelf: "V14", general: false },
+        { item: "Kerramax Care Gentle Border Super-Absorbent Dressing, 6\" x 6\"", part: "PRD-500-1175", mfr: "3M", shelf: "V14", general: false },
+        { item: "Kerramax Care Gentle Border Super-Absorbent Dressing, 8\" x 8\"", part: "PRD-500-1176", mfr: "3M", shelf: "V14", general: false },
+        { item: "Kerramax Care Gentle Border Super-Absorbent Dressing, 6\" x 10\"", part: "PRD-500-1177", mfr: "3M", shelf: "V14", general: false, note: "Currently out of stock" },
+        { item: "Kerramax Care Super-Absorbent Dressing, 5\" x 6\"", part: "PRD500-100", mfr: "3M", shelf: "V15", general: false },
+        { item: "Kerramax Care Super-Absorbent Dressing, 4\" x 9\"", part: "PRD500-120", mfr: "3M", shelf: "V15", general: false },
+        { item: "Kerramax Care Super-Absorbent Dressing, 8\" x 9\"", part: "PRD500-240", mfr: "3M", shelf: "V15", general: false },
 
         // Brand / product-line ranges
         { item: "Curad", part: "", mfr: "Curad", shelf: "S3", general: true },
@@ -904,7 +915,18 @@
 
         // OSNovative Systems
         { item: "Enluxtra Self-Adaptive Wound Dressing, 4\" x 4\"", part: "AWD-5-1010", mfr: "OSNovative Systems", shelf: "X8", general: false },
-        { item: "Enluxtra Self-Adaptive Wound Dressing, 6\" x 6\"", part: "AWD-5-1515-5", mfr: "OSNovative Systems", shelf: "X8", general: false }
+        { item: "Enluxtra Self-Adaptive Wound Dressing, 6\" x 6\"", part: "AWD-5-1515-5", mfr: "OSNovative Systems", shelf: "X8", general: false },
+
+        // Urgo Medical
+        { item: "UrgoClean Ag, 2.5\" x 2.5\"", part: "603070", mfr: "Urgo Medical", shelf: "V12, V13", general: false },
+        { item: "UrgoClean Ag, 4\" x 5\"", part: "603071", mfr: "Urgo Medical", shelf: "V12, V13", general: false },
+        { item: "UrgoK2 LF Kit, T1, 10 cm", part: "553243", mfr: "Urgo Medical", shelf: "V17 (overstock)", general: false },
+        { item: "UrgoK2 LF Kit, T2, 10 cm", part: "553244", mfr: "Urgo Medical", shelf: "V18", general: false },
+        { item: "UrgoK2 Lite LF Kit, T1, 10 cm", part: "553245", mfr: "Urgo Medical", shelf: "V19", general: false },
+        { item: "UrgoK2 Lite LF Kit, T2, 10 cm", part: "553246", mfr: "Urgo Medical", shelf: "V20", general: false },
+
+        // Solventum
+        { item: "Kerramax Care Super-Absorbent Dressing, 4\" x 4\"", part: "PRD500-050", mfr: "Solventum", shelf: "V15", general: false }
       ];
 
       // Sort by manufacturer, then item/part — the order the page always shows.
@@ -946,6 +968,7 @@
         var extra = [];
         if (e.swap) extra = [e.swap.main, e.swap.sub, "interchangeable"];
         if (e.xchange) extra = [e.xchange, "interchangeable"];
+        if (e.note) extra.push(e.note);
         var raw = [e.item, e.part, e.mfr, e.shelf].concat(expandShelf(e.shelf)).concat(extra).join(" ").toLowerCase();
         e._raw = raw;
         e._squashed = squash(raw);
@@ -1129,6 +1152,12 @@
               xnote.appendChild(document.createTextNode(" — if this one is out, the Gentell is the same item."));
             }
             main.appendChild(xnote);
+          }
+          if (e.note) {
+            var gnote = document.createElement("div");
+            gnote.className = "swap-note";
+            gnote.textContent = e.note;
+            main.appendChild(gnote);
           }
           li.appendChild(main);
 
