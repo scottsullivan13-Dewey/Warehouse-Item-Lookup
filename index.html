@@ -457,7 +457,7 @@
         <div class="meta-row">
           <span class="meta-pill"><strong id="totalCount">—</strong> locations</span>
           <span class="meta-pill"><strong id="brandCount">—</strong> brands</span>
-          <span class="meta-pill">Updated <strong>Nov 16, 2026</strong></span>
+          <span class="meta-pill">Updated <strong>Nov 17, 2026</strong></span>
         </div>
       </header>
 
@@ -505,7 +505,7 @@
     </div>
 
     <script>
-      // The list — straight from work-item-locations.md (Nov 16, 2026).
+      // The list — straight from work-item-locations.md (Nov 17, 2026).
       // One entry per row in that file: item/part #, brand, shelf.
       var ITEMS = [
         // 3M
@@ -904,7 +904,7 @@
         { item: "OPSITE Post-Op, 11-3/4in. x 4in.", part: "66000715", mfr: "Smith & Nephew", shelf: "BW7", general: false },
 
         // Manufacturer not yet noted
-        { item: "Cotton Tipped Wood Applicators, Sterile, 6\", individually pouched", part: "4304", mfr: "Dynarex", shelf: "X2 (overstock)", general: false },
+        { item: "Cotton Tipped Wood Applicators, Sterile, 6\", individually pouched", part: "4304", mfr: "Dynarex", shelf: "X2 (overstock), Q4", general: false },
         { item: "AMSure Sodium Chloride Inhalation Solution, USP (0.9% NaCl), 5mL", part: "ASR0059", mfr: "Amsino", shelf: "R4, OSW2", general: false },
         // Cardinal Health
         { item: "Self-Adhesive Dressing Retention Sheet, 2\" x 11 yds", part: "ZTDR02", mfr: "Cardinal Health", shelf: "R4", general: false },
@@ -1036,12 +1036,22 @@
         // Bard
         { item: "Bard Urinary Drainage Bag with Anti-Reflux Chamber and Bard Sampling Port", part: "154002", mfr: "Bard", shelf: "Q3", general: false },
         // BD
-        { item: "BD Magic3 with Sure-Grip Intermittent Catheter, Hydrophilic Coated Silicone, Male, 14Fr", part: "53614G", mfr: "BD", shelf: "Q3", general: false },
+        { item: "BD Magic3 with Sure-Grip Intermittent Catheter, Hydrophilic Coated Silicone, Male, 14Fr", part: "53614G", mfr: "BD", shelf: "Q3, Q4", general: false },
         // Medline
         { item: "AddiPak Unit Dose Vials, 15 mL, 0.9% Sodium Chloride", part: "HUDRHUD69U", mfr: "Medline", shelf: "Q3", general: false },
         // Amsino
         { item: "AMSure Urinary Leg Bag, Medium, 600 mL, Twist Valve", part: "AS308N", mfr: "Amsino", shelf: "Q3", general: false },
         { item: "AMSure Urinary Leg Bag, Large, 900 mL, Twist Valve", part: "AS309N", mfr: "Amsino", shelf: "Q3", general: false },
+        // BD
+        { item: "BD Magic3 Coudé Intermittent Catheter with Sure-Grip Sleeve, Hydrophilic Coated Silicone, Male, 14Fr", part: "50614", mfr: "BD", shelf: "Q4", general: false },
+        { item: "BD Magic3 Coudé Intermittent Catheter with Sure-Grip Sleeve, Hydrophilic Coated Silicone, Male, 16Fr", part: "50616", mfr: "BD", shelf: "Q4", general: false },
+        { item: "BD Magic3 with Sure-Grip Intermittent Catheter, Hydrophilic Coated Silicone, Pediatric, 8Fr", part: "52608G", mfr: "BD", shelf: "Q4", general: false },
+        { item: "BD Magic3 with Sure-Grip Intermittent Catheter, Hydrophilic Coated Silicone, Pediatric, 10Fr", part: "52610G", mfr: "BD", shelf: "Q4", general: false },
+        { item: "BD Magic3 with Sure-Grip Intermittent Catheter, Hydrophilic Coated Silicone, Male, 10Fr", part: "53610G", mfr: "BD", shelf: "Q4", general: false },
+        { item: "BD Magic3 with Sure-Grip Intermittent Catheter, Hydrophilic Coated Silicone, Male, 12Fr", part: "53612G", mfr: "BD", shelf: "Q4", general: false },
+        { item: "BD Magic3 with Sure-Grip Intermittent Catheter, Hydrophilic Coated Silicone, Male, 16Fr", part: "53616G", mfr: "BD", shelf: "Q4", general: false },
+        // McKesson
+        { item: "Unit Dose Vials Normal Saline, 15 mL, 0.9% Sodium Chloride, Inhalation Solution", part: "16-20069", mfr: "McKesson", shelf: "Q4", general: false },
       ];
 
       // Sort by manufacturer, then item/part — the order the page always shows.
